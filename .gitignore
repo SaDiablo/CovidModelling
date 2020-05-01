@@ -32,3 +32,6 @@ octave-workspace
 
 # Data 
 Data/
+
+# PSO toolbox
+Code/psopt/

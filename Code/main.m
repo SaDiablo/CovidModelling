@@ -12,13 +12,13 @@ display(join(['Population: ', num2str(optimprob.population)]))
 display(join(['Day Started: ', num2str(optimprob.dayStarted)]))
 
 %% algorithms
-optim.algorithm('lsqnonlin', optimprob.Country, optimprob.Province, 1); % lsqnonlin
-% optim.algorithm('patternsearch', optimprob.Country, optimprob.Province, 1); % patternsearch(s)
-% optim.algorithm('fminunc', optimprob.Country, optimprob.Province, 0); % fminunc(s)
-% optim.algorithm('fminsearch', optimprob.Country, optimprob.Province, 0); % fminsearch(s)
-% optim.algorithm('fmincon', optimprob.Country, optimprob.Province, 0); % fmincon(s)
-% optim.algorithm('ga', optimprob.Country, optimprob.Province, 0); % ga(s)
-% optim.algorithm('pso_algorithm', optimprob.Country, optimprob.Province, 0); % pso(s)
+data1 = optim.algorithm('lsqnonlin', optimprob.Country, optimprob.Province, 0); % lsqnonlin
+data2 = optim.algorithm('patternsearch', optimprob.Country, optimprob.Province, 0); % patternsearch(s)
+data3 = optim.algorithm('ga', optimprob.Country, optimprob.Province, 0); % ga(s)
+data4 = optim.algorithm('fminsearch', optimprob.Country, optimprob.Province, 0); % fminsearch(s)
+data5 = optim.algorithm('fmincon', optimprob.Country, optimprob.Province, 0); % fmincon(s)
+% data6 = optim.algorithm('fminunc', optimprob.Country, optimprob.Province, 0); % fminunc(s)
+data7 = optim.algorithm('pso', optimprob.Country, optimprob.Province, 0); % pso(s)
 
 %% Display difference between starting point and best found
 % load('outputBest','x')

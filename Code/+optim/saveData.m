@@ -11,11 +11,15 @@ function saveData(optimprob, data)
     
 %   if it exist change name to problem.bak and then save
     if(exist(join([folder, filename, '.mat']), 'file') == 2)
-        movefile (join([folder, filename, '.mat']), join([folder, filename, '.bak']))
+        %load
+        %overwrite
+        copyfile (join([folder, filename, '.mat']), join([folder, filename, '.bak']))
     end
     
-    save(join([folder, filename]), 'data')
-    
-
+    try
+        save(join([folder, filename]), 'data', '-append')
+    catch
+        save(join([folder, filename]), 'data')
+    end
 end
 

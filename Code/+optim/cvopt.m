@@ -15,9 +15,9 @@ global squareSmallest;
 global funcCount;
 
 % load problem filename
-[optimprob, filename] = optim.openProblem(Country_global, Province_global);
+[optimprob, folder] = optim.openProblem(Country_global, Province_global);
 % set image location
-filename_image = join([filename, optimprob.solver, '/', num2str(funcCount)]);
+filename_image = join([folder, optimprob.solver, '/', num2str(funcCount)]);
 
 % display(x)
 % x(2) = 300; %beta does nothing at all and breaks searching in patternsearch and fminsearch
@@ -29,13 +29,13 @@ filename_image = join([filename, optimprob.solver, '/', num2str(funcCount)]);
 
 %%
 % try
-    opt = simset('srcWorkspace', 'current', 'FixedStep', '1');
-    output.sim = sim('covid', optimprob.t, opt); %simulate
+    opt = simset('srcWorkspace', 'current');
+    output.sim = sim('covid', optimprob.t, opt);
 % catch
-%     if(strcmpi(optimprob.solver, 'lsqnonlin'))
+%     if(strcmpi(optimprob.solver, 'lsqnonlin')) % for lsqnonlin
 %         out = [optimprob.arrayInfectedQ*1e200;
 %             optimprob.arrayRecovered*1e200;
-%             optimprob.arrayDeaths*1e200]; % for lsqnonlin
+%             optimprob.arrayDeaths*1e200]; 
 %     else
 %         out = 1e200; % for rest
 %     end
@@ -56,9 +56,18 @@ deathsSubstracted = simDeaths(1, 1:size(optimprob.arrayDeaths, 2)) - optimprob.a
 % j = [infectedSubstracted; recoveredSubstracted*recoveredRatio; deathsSubstracted*deathRatio];
 
 %% or Calculate normalized function value
-j = [(10/optimprob.arrayInfectedQ(1,end))*infectedSubstracted;...
-    (10/optimprob.arrayRecovered(1,end))*recoveredSubstracted;...
-    (10/optimprob.arrayDeaths(1,end))*deathsSubstracted];
+% change to ratio of sum of the each arrays instead of last value
+j = [(optimprob.population/sum(optimprob.arrayInfectedQ)/1e5)*infectedSubstracted;...
+     (optimprob.population/sum(optimprob.arrayRecovered)/1e5)*recoveredSubstracted;...
+     (optimprob.population/sum(optimprob.arrayDeaths)/1e5)*deathsSubstracted];
+
+% j = [(10/max(optimprob.arrayInfectedQ))*infectedSubstracted;...
+%     (10/max(optimprob.arrayRecovered))*recoveredSubstracted;...
+%     (10/max(optimprob.arrayDeaths))*deathsSubstracted];
+
+% j = [(10/optimprob.arrayInfectedQ(1,end))*infectedSubstracted;...
+%     (10/optimprob.arrayRecovered(1,end))*recoveredSubstracted;...
+%     (10/optimprob.arrayDeaths(1,end))*deathsSubstracted];
 
 %% Calculate least squares (for display purposes)
 j2=j.^2;
